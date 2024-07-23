@@ -82,6 +82,10 @@
             width: 3rem;
             height: 3rem;
         }
+        /* Image Spacing */
+        .room-image {
+            padding: 10px; /* Add padding around images */
+        }
     </style>
 </head>
 <body>
@@ -129,16 +133,16 @@
                 <div class="col-md-12">
                     <h2 style="text-align: center;">Our Rooms</h2>
                     <div class="row">
-                        <div class="col-md-3">
+                        <div class="col-md-3 room-image">
                             <a href="img/eko-gardens.jpg" data-lightbox="rooms"><img src="img/eko-gardens.jpg" alt="" class="img-fluid"></a>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-3 room-image">
                             <a href="img/eko-hotel.jpg" data-lightbox="rooms"><img src="img/eko-hotel.jpg" alt="" class="img-fluid"></a>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-3 room-image">
                             <a href="img/eko-signature.webp" data-lightbox="rooms"><img src="img/eko-signature.webp" alt="" class="img-fluid"></a>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-3 room-image">
                             <a href="img/eko-suites.webp" data-lightbox="rooms"><img src="img/eko-suites.webp" alt="" class="img-fluid"></a>
                         </div>
                     </div>
@@ -198,10 +202,25 @@
             spinner.style.display = 'none'; // Hide the spinner once the page is fully loaded
         });
 
-        document.addEventListener('readystatechange', function() {
-            if (document.readyState === 'complete') {
-                const spinner = document.querySelector('.spinner');
-                spinner.style.display = 'none'; // Hide the spinner once the page is fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            const images = document.querySelectorAll('img');
+            let imagesLoaded = 0;
+
+            images.forEach(image => {
+                if (image.complete) {
+                    incrementCounter();
+                } else {
+                    image.addEventListener('load', incrementCounter);
+                    image.addEventListener('error', incrementCounter);
+                }
+            });
+
+            function incrementCounter() {
+                imagesLoaded++;
+                if (imagesLoaded === images.length) {
+                    const spinner = document.querySelector('.spinner');
+                    spinner.style.display = 'none'; // Hide the spinner once all images are loaded
+                }
             }
         });
     </script>
